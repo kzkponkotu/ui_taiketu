@@ -1,0 +1,135 @@
+<!doctype html>
+<html class="no-js" lang="ja" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foundation for Sites</title>
+    <link rel="stylesheet" href="css/foundation.css">
+    <link rel="stylesheet" href="css/app.css">
+    <style>
+    body {
+       background-color: #FFFFFF;
+       margin-left: 0px;
+       margin-top: 0px;
+       margin-right: 0px;
+       margin-bottom: 0px;
+       overflow-x: hidden;
+       overflow-y: hidden;
+    }
+    canvas {left:0;}
+    </style>
+    <script src="./js/p5.min.js"></script>
+    <script>
+        var gakuhu = [];    
+        function setup() {
+            createCanvas(windowWidth, windowHeight-document.getElementsByClassName("top-bar")[0].clientHeight);
+            for(var y=0; y<8; y++){
+                gakuhu[y] = [];                
+                for(var x=0; x<8; x++){
+                    gakuhu[y][x] = false;
+                }
+            }
+        }
+
+        function windowResized() {
+            resizeCanvas(windowWidth, windowHeight-document.getElementsByClassName("top-bar")[0].clientHeight);
+        }
+
+        function draw() {
+            stroke(0);
+            background(255);
+            //横線
+            for(var i=0; i<8; i++){
+                line(0,(height/8)*i,width,(height/8)*i);
+            }
+            //縦線
+            for(var i=0; i<8; i++){
+                line((width/8)*i,0,(width/8)*i,height);
+            }
+
+            for(var y=0; y<8; y++){
+                for(var x=0; x<8; x++){
+                    if(gakuhu[y][x]){
+                        fill(255,0,0);
+                        noStroke();
+                        rect((width/8)*x,(height/8)*y,(width/8),(height/8));
+                    }                    
+                }
+            }
+        }
+
+        //音符を打っていく
+        function mousePressed() {
+            for(var y=0; y<8; y++){
+                for(var x=0; x<8; x++){
+                    if(mouseY >= (height/8)*y && mouseY <= (height/8)*(y+1)){
+                        if(mouseX >= (width/8)*x && mouseX <= (width/8)*(x+1)){
+                            gakuhu[y][x] = !gakuhu[y][x];
+                        }
+                    }
+                }
+            }
+        }
+
+        function mouseDragged() {
+            for(var y=0; y<8; y++){
+                for(var x=0; x<8; x++){
+                    if(mouseY >= (height/8)*y && mouseY <= (height/8)*(y+1)){
+                        if(mouseX >= (width/8)*x && mouseX <= (width/8)*(x+1)){
+                            for(var i=0; i<8; i++)gakuhu[i][x] = false;
+                            gakuhu[y][x] = !gakuhu[y][x];
+                        }
+                    }
+                }
+            }
+        }
+
+        function touchStarted() {
+            for(var y=0; y<8; y++){
+                for(var x=0; x<8; x++){
+                    if(mouseY >= (height/8)*y && mouseY <= (height/8)*(y+1)){
+                        if(mouseX >= (width/8)*x && mouseX <= (width/8)*(x+1)){
+                            gakuhu[y][x] = !gakuhu[y][x];
+                        }
+                    }
+                }
+            }
+        }
+
+        function touchMoved() {
+            for(var y=0; y<8; y++){
+                for(var x=0; x<8; x++){
+                    if(mouseY >= (height/8)*y && mouseY <= (height/8)*(y+1)){
+                        if(mouseX >= (width/8)*x && mouseX <= (width/8)*(x+1)){
+                            for(var i=0; i<8; i++)gakuhu[i][x] = false;
+                            gakuhu[y][x] = !gakuhu[y][x];
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+  </head>
+  <body>
+    <div class="top-bar">
+    <div class="top-bar-left">
+        <ul class="dropdown menu" data-dropdown-menu>
+        <li class="menu-text">誰でも演奏できる君</li>
+        </ul>
+    </div>
+    <div class="top-bar-right">
+        <a href="#" class="button">＜</a>        
+        <a href="#" class="button">再生</a>
+        <a href="#" class="button">停止</a>
+        <a href="#" class="button">ダウンロード</a>
+        <a href="#" class="button">共有</a>        
+        <a href="#" class="button">＞</a>        
+    </div>    
+    </div>      
+    <script src="js/vendor/jquery.js"></script>
+    <script src="js/vendor/what-input.js"></script>
+    <script src="js/vendor/foundation.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
