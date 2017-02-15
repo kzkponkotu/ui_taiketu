@@ -58,33 +58,9 @@
                 }
             }
         }
-
+        
         //音符を打っていく
-        function mousePressed() {
-            for(var y=0; y<8; y++){
-                for(var x=0; x<8; x++){
-                    if(mouseY >= (height/8)*y && mouseY <= (height/8)*(y+1)){
-                        if(mouseX >= (width/8)*x && mouseX <= (width/8)*(x+1)){
-                            gakuhu[y][x] = !gakuhu[y][x];
-                        }
-                    }
-                }
-            }
-        }
-
-        function mouseDragged() {
-            for(var y=0; y<8; y++){
-                for(var x=0; x<8; x++){
-                    if(mouseY >= (height/8)*y && mouseY <= (height/8)*(y+1)){
-                        if(mouseX >= (width/8)*x && mouseX <= (width/8)*(x+1)){
-                            for(var i=0; i<8; i++)gakuhu[i][x] = false;
-                            gakuhu[y][x] = !gakuhu[y][x];
-                        }
-                    }
-                }
-            }
-        }
-
+        /*
         function touchStarted() {
             for(var y=0; y<8; y++){
                 for(var x=0; x<8; x++){
@@ -98,6 +74,32 @@
         }
 
         function touchMoved() {
+            for(var y=0; y<8; y++){
+                for(var x=0; x<8; x++){
+                    if(mouseY >= (height/8)*y && mouseY <= (height/8)*(y+1)){
+                        if(mouseX >= (width/8)*x && mouseX <= (width/8)*(x+1)){
+                            for(var i=0; i<8; i++)gakuhu[i][x] = false;
+                            gakuhu[y][x] = !gakuhu[y][x];
+                        }
+                    }
+                }
+            }
+        }
+        */
+
+        function mousePressed() {
+            for(var y=0; y<8; y++){
+                for(var x=0; x<8; x++){
+                    if(mouseY >= (height/8)*y && mouseY <= (height/8)*(y+1)){
+                        if(mouseX >= (width/8)*x && mouseX <= (width/8)*(x+1)){
+                            gakuhu[y][x] = !gakuhu[y][x];
+                        }
+                    }
+                }
+            }
+        }
+
+        function mouseDragged() {
             for(var y=0; y<8; y++){
                 for(var x=0; x<8; x++){
                     if(mouseY >= (height/8)*y && mouseY <= (height/8)*(y+1)){
