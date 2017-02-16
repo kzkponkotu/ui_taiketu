@@ -22,31 +22,30 @@
     <script src="./js/p5.min.js"></script>
     <script>
         var gakuhu = [];
-        var kousi;
+        var kousi_w,kousi_h;
         var mouseDragged_flag = false;
         var doremi = ['ド','レ','ミ','ファ','ソ','ラ','シ','ド'];
-        var doremi_font;
-        function preload() {
-            doremi_font = loadFont("font/NotoSansCJKjp-Thin.otf");
-        }
 
         function setup() {
             var ua = navigator.userAgent;
             if(ua.indexOf('iPhone') > 0 || ua.indexOf('iPod') > 0 || ua.indexOf('Android') > 0 && ua.indexOf('Mobile') > 0){
                 //alert("スマホ");
-                kousi = 4;
+                kousi_w = 4;
+                kousi_h = 8;
             }else if(ua.indexOf('iPad') > 0 || ua.indexOf('Android') > 0){
                 //alert("タブレット");
-                kousi = 4;
+                kousi_w = 4;
+                kousi_h = 8;
             }else{
                 //alert("PC");
-                kousi = 8;
+                kousi_w = 8;
+                kousi_h = 8;
             }
 
             createCanvas(windowWidth, windowHeight-document.getElementsByClassName("top-bar")[0].clientHeight);
-            for(var y=0; y<kousi; y++){
+            for(var y=0; y<kousi_h; y++){
                 gakuhu[y] = [];                
-                for(var x=0; x<kousi; x++){
+                for(var x=0; x<kousi_w; x++){
                     gakuhu[y][x] = false;
                 }
             }
@@ -61,27 +60,27 @@
             background(255);
 
             //横線
-            for(var i=0; i<kousi; i++){
-                line(0,(height/kousi)*i,width,(height/kousi)*i);
+            for(var i=0; i<kousi_h; i++){
+                line(0,(height/kousi_h)*i,width,(height/kousi_h)*i);
             }
             //縦線
-            for(var i=0; i<kousi; i++){
-                line((width/kousi)*i,0,(width/kousi)*i,height);
+            for(var i=0; i<kousi_w; i++){
+                line((width/kousi_w)*i,0,(width/kousi_w)*i,height);
             }
 
             //赤い四角とドレミファソラシドを書くよ
-            for(var y=0; y<kousi; y++){
-                for(var x=0; x<kousi; x++){
+            for(var y=0; y<kousi_h; y++){
+                for(var x=0; x<kousi_w; x++){
                     if(gakuhu[y][x]){
                         fill(255,0,0);
                         noStroke();
-                        rect((width/kousi)*x+10,(height/kousi)*y+10,(width/kousi)-20,(height/kousi)-20);
+                        rect((width/kousi_w)*x+10,(height/kousi_h)*y+10,(width/kousi_w)-20,(height/kousi_h)-20);
                     }
                     fill(0);
-                    stroke(0); 
-                    textFont(doremi_font);                   
-                    textSize(30);
-                    text(doremi[y],(width/kousi)*x+15,(height/kousi)*(y+1)-15);
+                    noStroke();                    
+                    if(width < height)textSize(((width/kousi_w)-20)/5);
+                    else textSize(((height/kousi_h)-20)/5);
+                    text(doremi[y],(width/kousi_w)*x+20,(height/kousi_h)*(y+1)-20);
                 }
             }
         }
@@ -89,11 +88,11 @@
         //譜面入力
         function mouseClicked() {
             if(!mouseDragged_flag){
-                for(var y=0; y<kousi; y++){
-                    for(var x=0; x<kousi; x++){
-                        if(mouseY >= (height/kousi)*y && mouseY <= (height/kousi)*(y+1)){
-                            if(mouseX >= (width/kousi)*x && mouseX <= (width/kousi)*(x+1)){
-                                if(!gakuhu[y][x])for(var i=0; i<kousi; i++)gakuhu[i][x] = false;                            
+                for(var y=0; y<kousi_h; y++){
+                    for(var x=0; x<kousi_w; x++){
+                        if(mouseY >= (height/kousi_h)*y && mouseY <= (height/kousi_h)*(y+1)){
+                            if(mouseX >= (width/kousi_w)*x && mouseX <= (width/kousi_w)*(x+1)){
+                                if(!gakuhu[y][x])for(var i=0; i<kousi_h; i++)gakuhu[i][x] = false;                            
                                 gakuhu[y][x] = !gakuhu[y][x];
                             }
                         }
@@ -104,11 +103,11 @@
         }
 
         function mouseDragged() {
-            for(var y=0; y<kousi; y++){
-                for(var x=0; x<kousi; x++){
-                    if(mouseY >= (height/kousi)*y && mouseY <= (height/kousi)*(y+1)){
-                        if(mouseX >= (width/kousi)*x && mouseX <= (width/kousi)*(x+1)){
-                            for(var i=0; i<kousi; i++)gakuhu[i][x] = false;
+            for(var y=0; y<kousi_h; y++){
+                for(var x=0; x<kousi_w; x++){
+                    if(mouseY >= (height/kousi_h)*y && mouseY <= (height/kousi_h)*(y+1)){
+                        if(mouseX >= (width/kousi_w)*x && mouseX <= (width/kousi_w)*(x+1)){
+                            for(var i=0; i<kousi_h; i++)gakuhu[i][x] = false;
                             gakuhu[y][x] = !gakuhu[y][x];
                             mouseDragged_flag = true;
                         }
