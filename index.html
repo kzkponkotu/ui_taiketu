@@ -53,6 +53,7 @@
         function draw() {
             stroke(0);
             background(255);
+
             //横線
             for(var i=0; i<kousi; i++){
                 line(0,(height/kousi)*i,width,(height/kousi)*i);
@@ -72,8 +73,8 @@
                 }
             }
         }
-        /*
-        function mousePressed() {
+        
+        function mouseClicked() {
             for(var y=0; y<kousi; y++){
                 for(var x=0; x<kousi; x++){
                     if(mouseY >= (height/kousi)*y && mouseY <= (height/kousi)*(y+1)){
@@ -84,20 +85,6 @@
                     }
                 }
             }
-        }
-        */
-
-        function touchEnded() {
-            for(var y=0; y<kousi; y++){
-                for(var x=0; x<kousi; x++){
-                    if(mouseY >= (height/kousi)*y && mouseY <= (height/kousi)*(y+1)){
-                        if(mouseX >= (width/kousi)*x && mouseX <= (width/kousi)*(x+1)){
-                            if(!gakuhu[y][x])for(var i=0; i<kousi; i++)gakuhu[i][x] = false;                            
-                            gakuhu[y][x] = !gakuhu[y][x];
-                        }
-                    }
-                }
-            }            
         }
 
         function mouseDragged() {
