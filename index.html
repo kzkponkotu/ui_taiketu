@@ -1,32 +1,37 @@
 <!doctype html>
 <html class="no-js" lang="ja" dir="ltr">
-  <head>
+  <head>      
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Foundation for Sites</title>
     <link rel="stylesheet" href="css/foundation.css">
-    <link rel="stylesheet" href="css/app.css">
     <style>
+    body {
+        background-color: #F1F0EE;
+        margin-left: 0px;
+        margin-top: 0px;
+        margin-right: 0px;
+        margin-bottom: 0px;
+        overflow-x: hidden;
+        overflow-y: hidden;
+    }
+
     .top-bar {
        background-color: #333333;
        color: #F1F0EE;
     }
     li {
        background-color: #333333;        
+       color: #F1F0EE;       
     }
     .button {
         background-color: #1253A4;
         color: #F1F0EE;
     }
-    body {
-       background-color: #FFFFFF;
-       margin-left: 0px;
-       margin-top: 0px;
-       margin-right: 0px;
-       margin-bottom: 0px;
-       overflow-x: hidden;
-       overflow-y: hidden;
+    span {
+       background-color: #333333;        
+       color: #F1F0EE;       
     }
     canvas {left:0;}
     </style>
@@ -65,6 +70,7 @@
         var renzoku_hantei_x = -1;
         var renzoku_hantei_y = -1;
         var saisei_doremi = [];
+        var saisei_flag=false;
         function setup() {
             for(var i=0; i<100; i++){
                 gakuhu[i] = [];            
@@ -110,7 +116,7 @@
 
         function draw() {
             stroke(18,83,164);
-            background(255);
+            background(241,240,238);
 
             //横線
             for(var i=0; i<kousi_h; i++){
@@ -189,31 +195,37 @@
             }
         }
 
-        function _music_play(num1,num2){
-            
-            if(num1 >= saisei_doremi.length-1 && num2 >= saisei_doremi[saisei_doremi.length-1].length-1){
+        var musicplayer;
 
-            }else{
-                if(saisei_doremi[num1][num2] != null){
-                    audio[saisei_doremi[num1][num2]].pause();
-                    audio[saisei_doremi[num1][num2]].currentTime = 0;
-                    audio[saisei_doremi[num1][num2]].play();
-                }
+        function _music_play(num1,num2){
+            if(saisei_doremi[num1][num2] != null){
+                audio[saisei_doremi[num1][num2]].pause();
+                audio[saisei_doremi[num1][num2]].currentTime = 0;
+                audio[saisei_doremi[num1][num2]].play();
             }
             num2++;
             if(num2 >= kousi_h){
                 num2=0;
                 num1++;
             }            
-            setTimeout(function() {_music_play(num1,num2);}, 1100 - document.getElementById("speed").value );
+            musicplayer = setTimeout(function() {_music_play(num1,num2);}, 1100 - document.getElementById("speed").value );
         }
 
         function music_play(){
-            for(var i=0; i<audio.length; i++){
-                audio[i].pause();
-                audio[i].currentTime = 0;
+            saisei_flag = !saisei_flag;
+            if(saisei_flag){
+                for(var i=0; i<audio.length; i++){
+                    audio[i].pause();
+                    audio[i].currentTime = 0;
+                }
+                _music_play(0,0);
+            }else{
+                for(var i=0; i<audio.length; i++){
+                    audio[i].pause();
+                    audio[i].currentTime = 0;
+                    clearTimeout(musicplayer);
+                }
             }
-            _music_play(0,0);
         }
     </script>
   </head>
@@ -241,6 +253,8 @@
             if(page<=0)document.getElementById("prev").style.visibility="hidden";
             else document.getElementById("prev").style.visibility="visible";
             document.getElementById("page_num").innerHTML = page+1;
+            if(saisei_flag)document.getElementById("saisei").innerHTML = "停止";
+            else document.getElementById("saisei").innerHTML = "再生";
         },0);
     </script>    
   </body>
