@@ -24,7 +24,12 @@
         var gakuhu = [];
         var kousi;
         var mouseDragged_flag = false;
-        var doremi = ['do','re','mi','fa','so','ra','si','do'];
+        var doremi = ['ド','レ','ミ','ファ','ソ','ラ','シ','ド'];
+        var doremi_font;
+        function preload() {
+            doremi_font = loadFont("font/NotoSansCJKjp-Thin.otf");
+        }
+
         function setup() {
             var ua = navigator.userAgent;
             if(ua.indexOf('iPhone') > 0 || ua.indexOf('iPod') > 0 || ua.indexOf('Android') > 0 && ua.indexOf('Mobile') > 0){
@@ -72,8 +77,10 @@
                         noStroke();
                         rect((width/kousi)*x+10,(height/kousi)*y+10,(width/kousi)-20,(height/kousi)-20);
                     }
-                    fill(0);                    
-                    textSize(72);
+                    fill(0);
+                    stroke(0); 
+                    textFont(doremi_font);                   
+                    textSize(30);
                     text(doremi[y],(width/kousi)*x+15,(height/kousi)*(y+1)-15);
                 }
             }
