@@ -22,9 +22,10 @@
     <script src="./js/p5.min.js"></script>
     <script>
         var gakuhu = [];
-        var kousi;  
+        var kousi;
+        var mouseDragged_flag = false;
+        var doremi = ['do','re','mi','fa','so','ra','si','do'];
         function setup() {
-
             var ua = navigator.userAgent;
             if(ua.indexOf('iPhone') > 0 || ua.indexOf('iPod') > 0 || ua.indexOf('Android') > 0 && ua.indexOf('Mobile') > 0){
                 //alert("スマホ");
@@ -63,28 +64,36 @@
                 line((width/kousi)*i,0,(width/kousi)*i,height);
             }
 
+            //赤い四角とドレミファソラシドを書くよ
             for(var y=0; y<kousi; y++){
                 for(var x=0; x<kousi; x++){
                     if(gakuhu[y][x]){
                         fill(255,0,0);
                         noStroke();
-                        rect((width/kousi)*x,(height/kousi)*y,(width/kousi),(height/kousi));
-                    }                    
+                        rect((width/kousi)*x+10,(height/kousi)*y+10,(width/kousi)-20,(height/kousi)-20);
+                    }
+                    fill(0);                    
+                    textSize(72);
+                    text(doremi[y],(width/kousi)*x+15,(height/kousi)*(y+1)-15);
                 }
             }
         }
         
+        //譜面入力
         function mouseClicked() {
-            for(var y=0; y<kousi; y++){
-                for(var x=0; x<kousi; x++){
-                    if(mouseY >= (height/kousi)*y && mouseY <= (height/kousi)*(y+1)){
-                        if(mouseX >= (width/kousi)*x && mouseX <= (width/kousi)*(x+1)){
-                            if(!gakuhu[y][x])for(var i=0; i<kousi; i++)gakuhu[i][x] = false;                            
-                            gakuhu[y][x] = !gakuhu[y][x];
+            if(!mouseDragged_flag){
+                for(var y=0; y<kousi; y++){
+                    for(var x=0; x<kousi; x++){
+                        if(mouseY >= (height/kousi)*y && mouseY <= (height/kousi)*(y+1)){
+                            if(mouseX >= (width/kousi)*x && mouseX <= (width/kousi)*(x+1)){
+                                if(!gakuhu[y][x])for(var i=0; i<kousi; i++)gakuhu[i][x] = false;                            
+                                gakuhu[y][x] = !gakuhu[y][x];
+                            }
                         }
                     }
                 }
             }
+            mouseDragged_flag = false;
         }
 
         function mouseDragged() {
@@ -94,6 +103,7 @@
                         if(mouseX >= (width/kousi)*x && mouseX <= (width/kousi)*(x+1)){
                             for(var i=0; i<kousi; i++)gakuhu[i][x] = false;
                             gakuhu[y][x] = !gakuhu[y][x];
+                            mouseDragged_flag = true;
                         }
                     }
                 }
