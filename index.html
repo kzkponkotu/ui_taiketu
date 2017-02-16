@@ -1,10 +1,6 @@
 <!doctype html>
 <html class="no-js" lang="ja" dir="ltr">
   <head>
-    <meta name="viewport" content="width=device-width initial-scale=1, user-scalable=no" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />      
-
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,13 +19,6 @@
     }
     canvas {left:0;}
     </style>
-    <script>
-        document.addEventListener('touchmove', function(e) {
-            if (window.innerHeight >= document.body.scrollHeight) {
-                e.preventDefault();
-            }
-        }, false);
-    </script>
     <script src="./js/p5.min.js"></script>
     <script>
         var gakuhu = [];
@@ -83,27 +72,13 @@
                 }
             }
         }
-        
-        //音符を打っていく
         /*
-        function touchStarted() {
-            for(var y=0; y<8; y++){
-                for(var x=0; x<8; x++){
-                    if(mouseY >= (height/8)*y && mouseY <= (height/8)*(y+1)){
-                        if(mouseX >= (width/8)*x && mouseX <= (width/8)*(x+1)){
-                            gakuhu[y][x] = !gakuhu[y][x];
-                        }
-                    }
-                }
-            }
-        }
-
-        function touchMoved() {
-            for(var y=0; y<8; y++){
-                for(var x=0; x<8; x++){
-                    if(mouseY >= (height/8)*y && mouseY <= (height/8)*(y+1)){
-                        if(mouseX >= (width/8)*x && mouseX <= (width/8)*(x+1)){
-                            for(var i=0; i<8; i++)gakuhu[i][x] = false;
+        function mousePressed() {
+            for(var y=0; y<kousi; y++){
+                for(var x=0; x<kousi; x++){
+                    if(mouseY >= (height/kousi)*y && mouseY <= (height/kousi)*(y+1)){
+                        if(mouseX >= (width/kousi)*x && mouseX <= (width/kousi)*(x+1)){
+                            if(!gakuhu[y][x])for(var i=0; i<kousi; i++)gakuhu[i][x] = false;                            
                             gakuhu[y][x] = !gakuhu[y][x];
                         }
                     }
@@ -112,16 +87,17 @@
         }
         */
 
-        function mousePressed() {
+        function touchEnded() {
             for(var y=0; y<kousi; y++){
                 for(var x=0; x<kousi; x++){
                     if(mouseY >= (height/kousi)*y && mouseY <= (height/kousi)*(y+1)){
                         if(mouseX >= (width/kousi)*x && mouseX <= (width/kousi)*(x+1)){
+                            if(!gakuhu[y][x])for(var i=0; i<kousi; i++)gakuhu[i][x] = false;                            
                             gakuhu[y][x] = !gakuhu[y][x];
                         }
                     }
                 }
-            }
+            }            
         }
 
         function mouseDragged() {
