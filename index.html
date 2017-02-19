@@ -115,17 +115,26 @@
         }
 
         function draw() {
-            stroke(18,83,164);
             background(241,240,238);
-
+            //stroke(18,83,164,255);
             //横線
+            /*
             for(var i=0; i<kousi_h; i++){
                 line(0,(height/kousi_h)*i,width,(height/kousi_h)*i);
             }
+            */
+            /*
             //縦線
             for(var i=0; i<kousi_w; i++){
                 line((width/kousi_w)*i,0,(width/kousi_w)*i,height);
             }
+            */
+            fill(18,83,164,255);
+            for(var i=0; i<kousi_h; i++){
+                for(var j=0; j<kousi_w; j++){
+                    ellipse((width/kousi_w)*i + ((width/kousi_w)/2),(height/kousi_h)*j+ ((height/kousi_h)/2),3,3);
+                }
+            }            
 
             //赤い四角とドレミファソラシドを書くよ
             for(var y=0; y<kousi_h; y++){
@@ -133,9 +142,11 @@
                     if(gakuhu[page][y][x]){
                         fill(242,105,100);
                         noStroke();
-                        rect((width/kousi_w)*x,(height/kousi_h)*y,(width/kousi_w),(height/kousi_h));
+                        //triangle((width/kousi_w)*x,(height/kousi_h)*y,(width/kousi_w)*x + (width/kousi_w),(height/kousi_h)*y,((width/kousi_w)*x + (width/kousi_w))/2,((height/kousi_h)*y + (height/kousi_h)/2));
+                        //ellipse((width/kousi_w)*x-((width/kousi_w)/2),(height/kousi_h)*y-((height/kousi_h)/2),100,100);
+                        rect((width/kousi_w)*x+2,(height/kousi_h)*y+2,(width/kousi_w)-2,(height/kousi_h)-4);
                     }
-                    fill(51,51,51);
+                    fill(51,51,51,255*0.5);
                     noStroke();
                     var tiisaaihou1,tiisaaihou2,tiisize;
                     if(width < height)tiisaaihou1 = width;
@@ -145,11 +156,14 @@
                     tiisize = (tiisaaihou1/tiisaaihou2)/8;
 
                     textSize(tiisize);
-                    text(doremi[y],(width/kousi_w)*x+5,(height/kousi_h)*(y+1)-5);
+                    if(y != 4)
+                    text(doremi[y],(width/kousi_w)*x + ((width/kousi_w)/2)-(tiisize/2),(height/kousi_h)*(y+1)-5);
+                    else
+                    text(doremi[y],(width/kousi_w)*x + ((width/kousi_w)/2)-(tiisize),(height/kousi_h)*(y+1)-5);
                 }
             }
         }
-        
+
         //譜面入力
         function mouseClicked() {
             if(!mouseDragged_flag){
@@ -198,11 +212,13 @@
         var musicplayer;
 
         function _music_play(num1,num2){
+            page = num1;
             if(saisei_doremi[num1][num2] != null){
                 audio[saisei_doremi[num1][num2]].pause();
                 audio[saisei_doremi[num1][num2]].currentTime = 0;
                 audio[saisei_doremi[num1][num2]].play();
             }
+
             num2++;
             if(num2 >= kousi_h){
                 num2=0;
@@ -226,7 +242,7 @@
                     clearTimeout(musicplayer);
                 }
             }
-        }
+        }        
     </script>
   </head>
   <body>
