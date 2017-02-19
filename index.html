@@ -87,7 +87,7 @@
                 kousi_h = 8;
             }else{
                 //alert("PC");
-                kousi_w = 8;
+                kousi_w = 9;
                 kousi_h = 8;
             }
 
@@ -116,6 +116,8 @@
 
         function draw() {
             background(241,240,238);
+            fill(255,212,100);
+            rect(0,0,(width/kousi_w),height);
             //stroke(18,83,164,255);
             //横線
             /*
@@ -146,20 +148,22 @@
                         //ellipse((width/kousi_w)*x-((width/kousi_w)/2),(height/kousi_h)*y-((height/kousi_h)/2),100,100);
                         rect((width/kousi_w)*x+2,(height/kousi_h)*y+2,(width/kousi_w)-2,(height/kousi_h)-4);
                     }
-                    fill(51,51,51,255*0.5);
+                    fill(51,51,51,255);
                     noStroke();
-                    var tiisaaihou1,tiisaaihou2,tiisize;
-                    if(width < height)tiisaaihou1 = width;
-                    tiisaaihou1 = height;
-                    if(kousi_w < kousi_h)tiisaaihou2 = kousi_w;
-                    else tiisaaihou2 = kousi_h;
-                    tiisize = (tiisaaihou1/tiisaaihou2)/8;
+                    if(x == 0){
+                        var tiisaaihou1,tiisaaihou2,tiisize;
+                        if(width < height)tiisaaihou1 = width;
+                        tiisaaihou1 = height;
+                        if(kousi_w < kousi_h)tiisaaihou2 = kousi_w;
+                        else tiisaaihou2 = kousi_h;
+                        tiisize = (tiisaaihou1/tiisaaihou2)/4;
 
-                    textSize(tiisize);
-                    if(y != 4)
-                    text(doremi[y],(width/kousi_w)*x + ((width/kousi_w)/2)-(tiisize/2),(height/kousi_h)*(y+1)-5);
-                    else
-                    text(doremi[y],(width/kousi_w)*x + ((width/kousi_w)/2)-(tiisize),(height/kousi_h)*(y+1)-5);
+                        textSize(tiisize);
+                        if(y != 4)
+                        text(doremi[y],(width/kousi_w)*x + ((width/kousi_w)/2)-(tiisize/2),(height/kousi_h)*(y+1)-5);
+                        else
+                        text(doremi[y],(width/kousi_w)*x + ((width/kousi_w)/2)-(tiisize),(height/kousi_h)*(y+1)-5);
+                    }
                 }
             }
         }
