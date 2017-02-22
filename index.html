@@ -7,6 +7,20 @@
     <title>Foundation for Sites</title>
     <link rel="stylesheet" href="css/foundation.css">
     <style>
+    .top_center_text {
+        font-weight: bold;
+        line-height: 1;
+        color: inherit;        
+    }
+
+    .bottom {
+        margin-bottom: 0;
+        bottom: 0;
+        position: fixed;
+        width: 100%;
+        height: 50px;
+    }
+
     body {
         background-color: #F1F0EE;
         margin-left: 0px;
@@ -15,9 +29,11 @@
         margin-bottom: 0px;
         overflow-x: hidden;
         overflow-y: hidden;
+        margin-bottom: 50px;
     }
 
     .top-bar {
+       text-align: center;        
        background-color: #333333;
        color: #F1F0EE;
     }
@@ -72,26 +88,26 @@
         var saisei_doremi = [];
         var saisei_flag=false;
         function setup() {
-            for(var i=0; i<100; i++){
-                gakuhu[i] = [];            
-                saisei_doremi[i] = [];
-            }
             var ua = navigator.userAgent;
             if(ua.indexOf('iPhone') > 0 || ua.indexOf('iPod') > 0 || ua.indexOf('Android') > 0 && ua.indexOf('Mobile') > 0){
                 //alert("スマホ");
-                kousi_w = 4;
+                kousi_w = 5;
                 kousi_h = 8;
             }else if(ua.indexOf('iPad') > 0 || ua.indexOf('Android') > 0){
                 //alert("タブレット");
-                kousi_w = 4;
+                kousi_w = 5;
                 kousi_h = 8;
             }else{
                 //alert("PC");
-                kousi_w = 9;
+                kousi_w = 5;
                 kousi_h = 8;
             }
+            for(var i=0; i<18+(9-kousi_w); i++){
+                gakuhu[i] = [];            
+                saisei_doremi[i] = [];
+            }
 
-            createCanvas(windowWidth, windowHeight-document.getElementsByClassName("top-bar")[0].clientHeight);
+            createCanvas(windowWidth,windowHeight - (document.getElementsByClassName("top-bar")[0].clientHeight + document.getElementsByClassName("top-bar")[1].clientHeight));
             for(var i=0; i<gakuhu.length; i++){
                 for(var y=0; y<kousi_h; y++){
                     gakuhu[i][y] = [];
@@ -104,14 +120,24 @@
 
         function page_next() {
             page++;
+            for(var y=0; y<kousi_h; y++){
+                for(var x=2; x<kousi_w; x++){
+                    gakuhu[page][y][x-1] = gakuhu[page-1][y][x];
+                }
+            }
         }
 
         function page_prev() {
-            page--;
+            page--;            
+            for(var y=0; y<kousi_h; y++){
+                for(var x=1; x<kousi_w-1; x++){
+                    gakuhu[page][y][x+1] = gakuhu[page+1][y][x];
+                }
+            }
         }
 
         function windowResized() {
-            resizeCanvas(windowWidth, windowHeight-document.getElementsByClassName("top-bar")[0].clientHeight);
+            resizeCanvas(windowWidth,windowHeight - (document.getElementsByClassName("top-bar")[0].clientHeight + document.getElementsByClassName("top-bar")[1].clientHeight));
         }
 
         function draw() {
@@ -120,34 +146,28 @@
             rect(0,0,(width/kousi_w),height);
             //stroke(18,83,164,255);
             //横線
-            /*
+            stroke(18,83,164,255*0.3);            
             for(var i=0; i<kousi_h; i++){
                 line(0,(height/kousi_h)*i,width,(height/kousi_h)*i);
             }
-            */
-            /*
             //縦線
+            stroke(18,83,164,255);            
             for(var i=0; i<kousi_w; i++){
                 line((width/kousi_w)*i,0,(width/kousi_w)*i,height);
             }
-            */
+            //中央に点
+            /*
             fill(18,83,164,255);
             for(var i=0; i<kousi_h; i++){
                 for(var j=0; j<kousi_w; j++){
                     ellipse((width/kousi_w)*i + ((width/kousi_w)/2),(height/kousi_h)*j+ ((height/kousi_h)/2),3,3);
                 }
-            }            
+            } 
+            */           
 
             //赤い四角とドレミファソラシドを書くよ
             for(var y=0; y<kousi_h; y++){
                 for(var x=0; x<kousi_w; x++){
-                    if(gakuhu[page][y][x]){
-                        fill(242,105,100);
-                        noStroke();
-                        //triangle((width/kousi_w)*x,(height/kousi_h)*y,(width/kousi_w)*x + (width/kousi_w),(height/kousi_h)*y,((width/kousi_w)*x + (width/kousi_w))/2,((height/kousi_h)*y + (height/kousi_h)/2));
-                        //ellipse((width/kousi_w)*x-((width/kousi_w)/2),(height/kousi_h)*y-((height/kousi_h)/2),100,100);
-                        rect((width/kousi_w)*x+2,(height/kousi_h)*y+2,(width/kousi_w)-2,(height/kousi_h)-4);
-                    }
                     fill(51,51,51,255);
                     noStroke();
                     if(x == 0){
@@ -160,9 +180,18 @@
 
                         textSize(tiisize);
                         if(y != 4)
-                        text(doremi[y],(width/kousi_w)*x + ((width/kousi_w)/2)-(tiisize/2),(height/kousi_h)*(y+1)-5);
+                        text(doremi[y],(width/kousi_w)*x + ((width/kousi_w)/2)-(tiisize/2),(height/kousi_h)*(y+1) - (((height/kousi_h)-(tiisize*0.5))*0.5));
                         else
-                        text(doremi[y],(width/kousi_w)*x + ((width/kousi_w)/2)-(tiisize),(height/kousi_h)*(y+1)-5);
+                        text(doremi[y],(width/kousi_w)*x + ((width/kousi_w)/2)-(tiisize),(height/kousi_h)*(y+1) - (((height/kousi_h)-(tiisize*0.5))*0.5));
+                    }else{
+                        if(gakuhu[page][y][x]){
+                            fill(242,105,100);
+                            noStroke();
+                            if(saisei_flag && page + x > 16)fill(0,0,0);
+                            //triangle((width/kousi_w)*x,(height/kousi_h)*y,(width/kousi_w)*x + (width/kousi_w),(height/kousi_h)*y,((width/kousi_w)*x + (width/kousi_w))/2,((height/kousi_h)*y + (height/kousi_h)/2));
+                            //ellipse((width/kousi_w)*x-((width/kousi_w)/2),(height/kousi_h)*y-((height/kousi_h)/2),100,100);
+                            rect((width/kousi_w)*x,(height/kousi_h)*y,(width/kousi_w),(height/kousi_h));
+                        }
                     }
                 }
             }
@@ -170,9 +199,9 @@
 
         //譜面入力
         function mouseClicked() {
-            if(!mouseDragged_flag){
+            if(!mouseDragged_flag && !saisei_flag){
                 for(var y=0; y<kousi_h; y++){
-                    for(var x=0; x<kousi_w; x++){
+                    for(var x=1; x<kousi_w; x++){
                         if(mouseY >= (height/kousi_h)*y && mouseY <= (height/kousi_h)*(y+1)){
                             if(mouseX >= (width/kousi_w)*x && mouseX <= (width/kousi_w)*(x+1)){
                                 if(!gakuhu[page][y][x])for(var i=0; i<kousi_h; i++)gakuhu[page][i][x] = false;                            
@@ -193,20 +222,22 @@
         }
 
         function mouseDragged() {
-            for(var y=0; y<kousi_h; y++){
-                for(var x=0; x<kousi_w; x++){
-                    if(mouseY >= (height/kousi_h)*y && mouseY <= (height/kousi_h)*(y+1)){
-                        if(mouseX >= (width/kousi_w)*x && mouseX <= (width/kousi_w)*(x+1)){
-                            for(var i=0; i<kousi_h; i++)gakuhu[page][i][x] = false;
-                            gakuhu[page][y][x] = !gakuhu[page][y][x];
-                            mouseDragged_flag = true;
-                            if(renzoku_hantei_y != y || renzoku_hantei_x != x){
-                                audio[y].currentTime = 0;
-                                audio[y].play();
-                                saisei_doremi[page][x] = y;
+            if(!saisei_flag){            
+                for(var y=0; y<kousi_h; y++){
+                    for(var x=1; x<kousi_w; x++){
+                        if(mouseY >= (height/kousi_h)*y && mouseY <= (height/kousi_h)*(y+1)){
+                            if(mouseX >= (width/kousi_w)*x && mouseX <= (width/kousi_w)*(x+1)){
+                                for(var i=0; i<kousi_h; i++)gakuhu[page][i][x] = false;
+                                gakuhu[page][y][x] = !gakuhu[page][y][x];
+                                mouseDragged_flag = true;
+                                if(renzoku_hantei_y != y || renzoku_hantei_x != x){
+                                    audio[y].currentTime = 0;
+                                    audio[y].play();
+                                    saisei_doremi[page][x] = y;
+                                }
+                                renzoku_hantei_x = x;
+                                renzoku_hantei_y = y;   
                             }
-                            renzoku_hantei_x = x;
-                            renzoku_hantei_y = y;   
                         }
                     }
                 }
@@ -215,30 +246,72 @@
 
         var musicplayer;
 
-        function _music_play(num1,num2){
-            page = num1;
+        function _music_play(num){
+            page = num;
+            if(page > 0){
+                for(var y=0; y<kousi_h; y++){
+                    for(var x=2; x<kousi_w; x++){
+                        gakuhu[page][y][x-1] = gakuhu[page-1][y][x];
+                        if(page + x > 16){
+                            gakuhu[page][y][x] = true;
+                        }
+                    }
+                }
+                if(page != 17){
+                    for(var y=0; y<kousi_h; y++){
+                        if(gakuhu[page-1][y][1]){
+                            audio[y].pause();
+                            audio[y].currentTime = 0;
+                            audio[y].play();
+                        }
+                    }
+                }
+            }            
+            /*
             if(saisei_doremi[num1][num2] != null){
                 audio[saisei_doremi[num1][num2]].pause();
                 audio[saisei_doremi[num1][num2]].currentTime = 0;
                 audio[saisei_doremi[num1][num2]].play();
             }
-
-            num2++;
-            if(num2 >= kousi_h){
-                num2=0;
-                num1++;
-            }            
-            musicplayer = setTimeout(function() {_music_play(num1,num2);}, 1100 - document.getElementById("speed").value );
+            */
+            /*
+            for(var i=0; i<gakuhu.length; i++){
+                for(var y=0; y<kousi_h; y++){
+                    for(var x=0; x<kousi_w; x++){
+                        if(gakuhu[i][y][x]){
+                            audio[saisei_doremi[num1][num2]].pause();
+                            audio[saisei_doremi[num1][num2]].currentTime = 0;
+                            audio[saisei_doremi[num1][num2]].play();
+                        }
+                    }
+                }
+            } 
+            */
+            num++;
+            if(page < 17){
+                musicplayer = setTimeout(function() {_music_play(num);}, 1100 - document.getElementById("speed").value );
+            }else{
+                saisei_flag = false;
+                page=0;
+            }
         }
 
         function music_play(){
+            while(page>0){
+                page--;            
+                for(var y=0; y<kousi_h; y++){
+                    for(var x=1; x<kousi_w-1; x++){
+                        gakuhu[page][y][x+1] = gakuhu[page+1][y][x];
+                    }
+                }                
+            }
             saisei_flag = !saisei_flag;
             if(saisei_flag){
                 for(var i=0; i<audio.length; i++){
                     audio[i].pause();
                     audio[i].currentTime = 0;
                 }
-                _music_play(0,0);
+                _music_play(0);
             }else{
                 for(var i=0; i<audio.length; i++){
                     audio[i].pause();
@@ -251,19 +324,21 @@
   </head>
   <body>
     <div class="top-bar">
+        <span class="top_center_text">誰でも演奏できる君　</span>
     <div class="top-bar-left">
-        <ul class="dropdown menu" data-dropdown-menu>
-        <li class="menu-text">誰でも演奏できる君</li>
-        </ul>
-    </div>
+        <a href="#" id="prev" class="button" onclick="page_prev()">＜</a>        
+    </div>        
     <div class="top-bar-right">
-        <a href="#" id="prev" class="button" onclick="page_prev()">＜</a>
-        <span id="page_num"></span><span>ページ目</span>
-        <a href="#" id="saisei" class="button" onclick="music_play()">再生</a>
-        再生速度:<input type="range" id="speed" step="1" min="100" max="1000">
         <a href="#" id="next" class="button" onclick="page_next()">＞</a>
     </div>    
-    </div>      
+    </div>
+
+    <div class="top-bar bottom">
+        <a href="#" id="saisei" class="button" onclick="music_play()">再生</a>
+        <input type="range" id="speed" step="1" min="100" max="1000">
+        <a href="#" class="button" onclick="music_play()">共有</a>
+        <a href="#" class="button" onclick="music_play()">楽器作成</a>
+    </div>
     <script src="js/vendor/jquery.js"></script>
     <script src="js/vendor/what-input.js"></script>
     <script src="js/vendor/foundation.js"></script>
@@ -272,7 +347,8 @@
         setInterval(function(){
             if(page<=0)document.getElementById("prev").style.visibility="hidden";
             else document.getElementById("prev").style.visibility="visible";
-            document.getElementById("page_num").innerHTML = page+1;
+            if(page>=8+(9-kousi_w))document.getElementById("next").style.visibility="hidden";
+            else document.getElementById("next").style.visibility="visible";
             if(saisei_flag)document.getElementById("saisei").innerHTML = "停止";
             else document.getElementById("saisei").innerHTML = "再生";
         },0);
